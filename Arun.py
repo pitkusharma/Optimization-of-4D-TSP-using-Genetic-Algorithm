@@ -139,12 +139,10 @@ def geneticAlgorithm(population,eliteSize,mutationRate,generationNo):
 
   print("\n"+"First Gen minimum cost:" + str(costList[0]) + "\n" + "Final Gen minimum cost: " + str(costList[generationNo-1]))
   
-  plt.title("TSP USING GENETIC ALGORITHM")
-  plt.xlabel("Generations")
-  plt.ylabel("Cost")
-  plt.plot(costList, marker="o", mfc="#db513b", mec="#db513b", linestyle = 'dashed', color="#5fcc3d")
-  plt.show()
-  return population[0].path
+  returnList = []
+  returnList.append(costList)
+  returnList.append(population[0].path)
+  return returnList
 
 
 
@@ -160,7 +158,7 @@ for i in range(0,cityCount):
   cityList.append(cities(int(random.random() * 100),int(random.random() * 100)))
 
 
-# cityCordinates = [[86,16], [6,45], [37,68], [5,12], [23,92], [15,35], [15,32], [55,30], [56,47], [74,68], [1,92], [28,96], [97,53], [6,99], [12,10], [43,28], [9,44], [97,33], [58,83], [80,99], [54,64], [25,35], [90,56], [14,19], [98,42]] #City cordinates
+# cityCordinates = [[0,68], [53,31], [79,26], [67,55], [6,60], [1,38], [66,66], [49,27], [81,24], [19,54], [15,92], [83,47], [31,86], [68,80], [75,85], [79,97], [29,53], [11,47], [26,22], [71,47], [80,63], [11,44], [76,28], [71,98], [83,72]]
 # for i in range(0,cityCount):
 #   cityList.append(cities(cityCordinates[i][0],cityCordinates[i][1]))
 
@@ -169,17 +167,28 @@ veryFirstPopulation = initialPopulation(popSize, cityList) #Creating Initial pop
 population = veryFirstPopulation
 
 
-shortestPath = geneticAlgorithm(population,eliteSize,mutationRate,generationNo)
+returnList = geneticAlgorithm(population,eliteSize,mutationRate,generationNo)
+
+
+#plotting 
+
+
+plt.title("TSP USING GENETIC ALGORITHM")
+plt.xlabel("Generations")
+plt.ylabel("Cost")
+plt.plot(returnList[0], marker="o", mfc="#db513b", mec="#db513b", linestyle = 'dashed', color="#5fcc3d")
+plt.show()
 
 
 print("\nCITIES CORDINATE LIST: ",cityList)
 
+
 x = []
 y = []
-for i in range(0,len(shortestPath)):
-  x.append(shortestPath[i].x)
-  y.append(shortestPath[i].y)
+for i in range(0,len(returnList[1])):
+  x.append(returnList[1][i].x)
+  y.append(returnList[1][i].y)
 
-plt.title("TSP USING GENETIC ALGORITHM")
+plt.title("TSP USING GENETIC ALGORITHM\n" + "ROUTE COST = " + str(round(returnList[0][-1], 2)))
 plt.plot(x,y, marker="o", mfc="#db513b", mec="#db513b", linestyle = 'dashed', color="#5fcc3d")
 plt.show()
