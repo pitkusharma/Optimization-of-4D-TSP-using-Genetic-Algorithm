@@ -2,33 +2,47 @@ import random
 import matplotlib.pyplot as plt
 
 
-# dataMatrix = [
-#   [0,29,82,46,68,52,72,42,51,55],
-#   [29,0,55,46,42,43,43,23,23,31],
-#   [82,55,0,68,46,55,23,43,41,29],
-#   [46,46,68,0,82,15,72,31,62,42],
-#   [68,42,46,82,0,74,23,52,21,46],
-#   [52,43,55,15,74,0,61,23,55,31],
-#   [72,43,23,72,23,61,0,42,23,31],
-#   [42,23,43,31,52,23,42,0,33,15],
-#   [51,23,41,62,21,55,23,33,0,29],
-#   [55,31,29,42,46,31,31,15,29,0]
-# ]
-dataMatrix = [
-[0,1,3,4,5],
-[1,0,1,4,8],
-[3,1,0,5,1],
-[4,4,5,0,2],
-[5,8,1,2,0],
-]
+#Genetic Algorithm Parameters
 popSize = 10
-#cityList = [0,1,2,3,4,5,6,7,8,9] #City List
-cityList = [0,1,2,3,4] #City List
 eliteSize = 2
-mutationRate = 0.05
+mutationRate = .05
 crossOverRate = 1
 generationNo = 2
 chromosomeRollNo = 0
+
+
+plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
+
+
+
+def readTSPData(fileName):
+  sourceFile = open(fileName, "r")
+  rawData = sourceFile.read()
+  sourceFile.close()
+  formattedData = []
+
+  temp = ""
+  tempLine = []
+  for i in rawData:
+    if i != " ":
+      temp += str(i)
+    if i == " " or i == "\n":
+      if temp != "":
+        temp = float(temp)
+        tempLine.append(temp)
+        temp = ""
+    if i == "\n":
+      formattedData.append(tempLine)
+      tempLine = []
+  temp = float(temp)
+  tempLine.append(temp)
+  formattedData.append(tempLine)
+  return formattedData
+
+
+#put data text file name in the readTSPData function to read the tsp data
+dataMatrix = readTSPData("data.txt")
+cityList = [ i for i in range(0,len(dataMatrix)) ] #City List
 
 
 class chromosomes:
@@ -46,8 +60,12 @@ class chromosomes:
 
 def generateInitialPopulation(popSize, initialPopulation, cityList):
   global chromosomeRollNo
-  for i in range(0,popSize):
+  count = popSize
+  for i in range(0,count):
     chromosome = chromosomes(random.sample(cityList, len(cityList)),chromosomeRollNo)
+    if chromosome in initialPopulation:
+      while(chromosome in initialPopulation):
+        chromosome = chromosomes(random.sample(cityList, len(cityList)),chromosomeRollNo)
     chromosomeRollNo += 1
     initialPopulation.append(chromosome)
 
@@ -90,6 +108,7 @@ def rwSelection(population):
     if (N>P):
       return i
 
+
 def selectParents(population,matingPool,numberOfParents):
   for i in range(0,numberOfParents):
     selectedParent = rwSelection(population)
@@ -101,7 +120,7 @@ def orderedCrossOver(parent1, parent2):
   parent1subset = []
   parent2subset = []
   randomPoint1 = random.randint(0,(len(parent1) - 1))
-  randomPoint2 = random.randint(0,(len(parent1) - 1))
+  randomPoint2 = random.randint(0,(len(parent1) - 0))
   startGene = min(randomPoint1, randomPoint2)
   endGene = max(randomPoint1, randomPoint2)
 
@@ -184,7 +203,7 @@ def geneticAlgorithm():
     eliteChromosomes = []
     elitism(population,eliteChromosomes,eliteSize)
 
-    print("/////_____________ BEST CHROMOSOMES OF THIS GENERATION _______________//")
+    print("/////_____________ BEST CHROMOSOMES OF THIS POPULATION _______________//")
     print(eliteChromosomes)
 
     matingPool = []
@@ -225,14 +244,12 @@ def geneticAlgorithm():
 
 costList = geneticAlgorithm()
 
-plt.title("TSP USING GENETIC ALGORITHM\n MIN COST = " + str(costList[-1]))
-plt.xlabel("Generations")
-plt.ylabel("Cost")
-plt.plot(costList, marker="o", mfc="#db513b", mec="#db513b", linestyle = 'dashed', color="#5fcc3d")
-plt.show()
 
+#plotting
 
-
-
-
-
+if plotFlag == 1:
+  plt.title("TSP USING GENETIC ALGORITHM\n MIN COST = " + str(costList[-1]))
+  plt.xlabel("Generations")
+  plt.ylabel("Cost")
+  plt.plot(costList, marker="o", mfc="#db513b", mec="#db513b", linestyle = 'dashed', color="#5fcc3d")
+  plt.show()
