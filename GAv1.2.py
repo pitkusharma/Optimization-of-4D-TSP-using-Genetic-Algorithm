@@ -97,6 +97,19 @@ def elitism(population,eliteChromosomes,eliteSize):
     eliteChromosomes.append(sortedPopulation[i])
 
 
+def showProbability (population):
+  totalFitness = 0
+  for i in population:
+    totalFitness += i.fitnessScore
+  cumulativeProbability = 0
+  print("/////_____________ SELECTION PROBABILITY & CUMULATIVE PROBABILITY OF PARENTS _______________//")
+  print("id     Fitness           Selection Probability       Cumulative Probability ")
+  for i in population:
+    i.selectProbability = i.fitnessScore / totalFitness
+    cumulativeProbability += i.selectProbability
+    print( str(i.chromosomeRollNo) + ") " +  str(i.fitnessScore) + "    " + str(i.selectProbability) + "         " + str(cumulativeProbability))
+
+
 def rwSelection(population):
   totalFitness = 0
   for i in population:
@@ -205,7 +218,9 @@ def geneticAlgorithm():
 
     print("/////_____________ BEST CHROMOSOMES OF THIS POPULATION _______________//")
     print(eliteChromosomes)
-
+    
+    showProbability(population)
+    
     matingPool = []
     selectParents(population,matingPool,popSize)
     print("/////_____________ SELECTED PARENTS FOR CROSSOVER _______________//")
