@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 popSize = 10
 eliteSize = 2
 mutationRate = .05
-crossOverRate = 1
+crossOverRate = 0.6
 generationNo = 2
 chromosomeRollNo = 0
 
@@ -102,7 +102,7 @@ def showProbability (population):
   for i in population:
     totalFitness += i.fitnessScore
   cumulativeProbability = 0
-  print("/////_____________ SELECTION PROBABILITY & CUMULATIVE PROBABILITY OF PARENTS _______________//")
+  print("/////_____________ SELECTION PROBABILITY OF POPULATION & CUMULATIVE PROBABILITY _______________//")
   print("id     Fitness           Selection Probability       Cumulative Probability ")
   for i in population:
     i.selectProbability = i.fitnessScore / totalFitness
