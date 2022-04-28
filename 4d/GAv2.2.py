@@ -1,4 +1,4 @@
-import random,copy
+import random
 from data_functions import *
 import matplotlib.pyplot as plt
 
@@ -6,28 +6,39 @@ import matplotlib.pyplot as plt
 
 
 #Genetic Algorithm Parameters
-popSize = 50
+popSize = 10
 elitismRate = 0.2
 mutationRate = .05
-crossOverRate = 0.8
-generationNo = 100
+crossOverRate = 0.6
+generationNo = 2
 
 
+
+
+fileName = "five_d.txt"
+
+
+# to generate a 4d data matrix with random value :-
+
+# c_size = 5
+# r_size = 4
+# v_size = 5
+# dataMatrix = generate_data_matrix(c_size,r_size,v_size)
+
+
+# to generate from a 2d TSP data :-
+
+dataMatrix, c_size, r_size, v_size = matrix_2d_to_4d(read_tsp_data(fileName))
+
+
+print_datamatrix(dataMatrix)
+cityList = generate_city(c_size)
+roadList = generate_road(r_size)
+vehicleList = generate_vehicle(v_size)
 
 
 plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
 chromosomeRollNo = 0
-
-c_size = 10
-r_size = 5
-v_size = 3
-
-dataMatrix = generate_data_matrix(c_size,r_size,v_size)
-# print_datamatrix(dataMatrix)
-
-cityList = generate_city(c_size)
-roadList = generate_road(r_size)
-vehicleList = generate_vehicle(v_size)
 
 
 class chromosomes:
@@ -233,7 +244,7 @@ def createNextGeneration(population, eliteChromosomes, children, nextGeneration)
     nextGeneration.append(i)
   
   remainingLength = len(population) - len(nextGeneration)
-  #population = population + children
+  # population = population + children
   population.sort(key = lambda x : x.distance)
   for i in population:
     if i not in nextGeneration and remainingLength > 0:
