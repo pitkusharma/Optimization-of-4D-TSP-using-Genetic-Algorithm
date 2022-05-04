@@ -1,8 +1,6 @@
 import random
 
 
-# Implementation of Order Based Crossover (OX 2):
-
 def ordered_crossover(parent1, parent2):
   length = len(parent1)
   child = [0]*length
@@ -54,15 +52,11 @@ def ordered_crossover(parent1, parent2):
   child2 = child.copy()
 
   return child1, child2
-  
-  
 
-
-# Implementation of Cyclic Crossover:
 
 def cyclic_crossover(parent1, parent2):
   length = len(parent1)
-  child = [0]*length
+  child = [-1]*length
   cycle_index = []
   start_pos = random.randint(0, length-1)
   temp = start_pos
@@ -89,7 +83,7 @@ def cyclic_crossover(parent1, parent2):
 
 
   # creating the second child
-  child = [0]*length
+  child = [-1]*length
   for i in cycle_index:
     child[i] = parent2[i]
   for i in range(0, length):
@@ -101,15 +95,11 @@ def cyclic_crossover(parent1, parent2):
   child2 = child.copy()
 
   return child1, child2
-  
 
-
-
-# Implementation of Order Based Crossover (OX 2):
 
 def order_based_crossover(parent1, parent2):
   length = len(parent1)
-  child = [0]*length
+  child = [-1]*length
   child_subset = []
   positions = []
   temp_parent = parent1.copy()
@@ -118,18 +108,18 @@ def order_based_crossover(parent1, parent2):
   temp = 0
   for i in range(0, temp_num):
     pos = random.randint(0, length-1)
-    while (temp_parent[pos] == 0):
+    while (temp_parent[pos] == -1):
       pos = random.randint(0, length-1)
     child_subset.append(temp_parent[pos])
     positions.append(pos)
-    temp_parent[pos] = 0
+    temp_parent[pos] = -1
   #   print("random positions are     -", pos)
   # print("Child subset —", child_subset)
   for i in range(0, length):
     if (parent2[i] not in child_subset):
       child[i] = parent2[i]
   for i in range(0, length):
-    if child[i] != 0:
+    if child[i] != -1:
       continue
     else:
       child[i] = child_subset[temp]
@@ -138,7 +128,7 @@ def order_based_crossover(parent1, parent2):
 
   # creating the second child--
 
-  child = [0]*length
+  child = [-1]*length
   child_subset = []
   temp_parent = parent2.copy()
   temp = 0
@@ -150,7 +140,7 @@ def order_based_crossover(parent1, parent2):
     if (parent1[i] not in child_subset):
       child[i] = parent1[i]
   for i in range(0, length):
-    if child[i] != 0:
+    if child[i] != -1:
       continue
     else:
       child[i] = child_subset[temp]
@@ -158,15 +148,11 @@ def order_based_crossover(parent1, parent2):
   child2 = child.copy()
 
   return child1, child2
-  
-  
 
-
-# Implementation of Partially Mapped Crossover (PMX):
 
 def partially_mapped_crossover(parent1, parent2):
   length = len(parent1)
-  child = [0]*length
+  child = [-1]*length
   subset_len = random.randint(2, length-2)
   temp = 0
   
@@ -196,14 +182,14 @@ def partially_mapped_crossover(parent1, parent2):
         child[i] = parent1[i]
 
   for i in range(0, length):
-    if child[i] == 0:
+    if child[i] == -1:
       while (parent1[temp] in child):
         temp += 1
       child[i] = parent1[temp]
   child1 = child.copy()
 
 # making the second child
-  child = [0]*length
+  child = [-1]*length
   temp = 0
 
   for i in range(0, subset_len):
@@ -213,53 +199,48 @@ def partially_mapped_crossover(parent1, parent2):
     
   for i in range(0, length):
     if(parent2[i] not in child):
-      if child[i]==0:
+      if child[i]==-1:
         child[i] = parent2[i]
 
   for i in range(0, length):
-    if child[i] == 0:
+    if child[i] == -1:
       while (parent2[temp] in child):
         temp += 1
       child[i] = parent2[temp]
   child2 = child.copy()
 
   return child1, child2
-  
 
-
-
-
-# Implementation of Position Based Crossover:
 
 def position_based_crossover(parent1, parent2):
   length = len(parent1)
-  child = [0]*length
+  child = [-1]*length
   positions = []
   temp_num = random.randint(2, length-3)
   # print("Number of random positions -", temp_num)
   temp = 0
   for i in range(0, temp_num):
     pos = random.randint(0, length-1)
-    while (child[pos] != 0):
+    while (child[pos] != -1):
       pos = random.randint(0, length-1)
     child[pos] = parent1[pos]
     positions.append(pos)
     # print("Random positions are     -", pos)
   for i in range(0, length):
-    while(child[i] == 0):
+    while(child[i] == -1):
       if (parent2[temp] not in child):
         child[i] = parent2[temp]
       temp += 1
   child1 = child.copy()
 
 # creating the second child
-  child = [0]*length
+  child = [-1]*length
   temp = 0
   for i in positions:
       child[i] = parent2[i]
   # print("Random positions are     -", positions)
   for i in range(0, length):
-    while(child[i] == 0):
+    while(child[i] == -1):
       if (parent1[temp] not in child):
         child[i] = parent1[temp]
       temp += 1
@@ -267,5 +248,20 @@ def position_based_crossover(parent1, parent2):
 
 
   return child1,  child2
+ 
   
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
