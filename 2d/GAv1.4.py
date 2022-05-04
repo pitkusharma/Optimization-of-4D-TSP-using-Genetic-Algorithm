@@ -1,5 +1,7 @@
 import random
 import matplotlib.pyplot as plt
+from crossover import *
+from mutation import *
 
 
 
@@ -9,12 +11,12 @@ popSize = 300
 elitismRate = 0.2
 mutationRate = .05
 crossOverRate = 0.8
-generationNo = 100
+generationNo = 200
 
 
 
 
-fileName ="fri26_d.txt"
+fileName ="dataSets/fri26_d.txt"
 chromosomeRollNo = 0
 plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
 
@@ -124,7 +126,6 @@ def selectParents(population, matingPool, eliteChromosomes, numberOfParents):
 
     
 def orderedCrossOver(parent1, parent2):
-  bothChild = []
   
   randomPoint1 = random.randint(0,(len(parent1) - 1))
   randomPoint2 = random.randint(0,(len(parent1) - 0))
@@ -133,7 +134,7 @@ def orderedCrossOver(parent1, parent2):
   endGene = max(randomPoint1, randomPoint2)
   
   #child 1
-  child = []
+  child1 = []
   parent1subset = []
   parent2subset = []
   
@@ -141,12 +142,11 @@ def orderedCrossOver(parent1, parent2):
     parent1subset.append(parent1[i])
   
   parent2subset = [item for item in parent2 if item not in parent1subset]
-  child = parent1subset + parent2subset
+  child1 = parent1subset + parent2subset
 
-  bothChild.append(child)
 
   #child 2
-  child = []
+  child2 = []
   parent1subset = []
   parent2subset = []
 
@@ -154,29 +154,32 @@ def orderedCrossOver(parent1, parent2):
     parent2subset.append(parent2[i])
   
   parent1subset = [item for item in parent1 if item not in parent2subset]
-  child = parent1subset + parent2subset  
+  child2 = parent1subset + parent2subset  
 
-  bothChild.append(child)
 
-  return bothChild
+  return child1, child2
   
 
 def generateChildren(matingPool, children):
   matingPool.sort(key = lambda x : x.distance)
   global chromosomeRollNo
   length = len(matingPool) - 1
-  for i in range(1,length, 2):
-    parent1 = matingPool[0]
+  # for i in range(1,length, 1):
+  #   parent1 = matingPool[0]
+  #   parent2 = matingPool[i+1]
+  
+  for i in range(0,length, 2):
+    parent1 = matingPool[i]
     parent2 = matingPool[i+1]
     
-    temp = orderedCrossOver(parent1.route, parent2.route)
+    child1, child2 = orderedCrossOver(parent1.route, parent2.route)
 
     parents = [parent1.chromosomeRollNo, parent2.chromosomeRollNo]
-    childChromosome1 = chromosomes(temp[0],chromosomeRollNo, parents)
+    childChromosome1 = chromosomes(child1,chromosomeRollNo, parents)
     chromosomeRollNo += 1
 
     parents = [parent2.chromosomeRollNo, parent1.chromosomeRollNo]
-    childChromosome2 = chromosomes(temp[1],chromosomeRollNo, parents)
+    childChromosome2 = chromosomes(child2,chromosomeRollNo, parents)
     chromosomeRollNo += 1
 
     # if fitnessOperator(childChromosome1) < fitnessOperator(parent1):
