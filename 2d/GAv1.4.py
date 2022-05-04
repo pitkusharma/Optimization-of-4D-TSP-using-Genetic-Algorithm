@@ -1,7 +1,6 @@
 import random
 import matplotlib.pyplot as plt
 from crossover import *
-from mutation import *
 
 
 
