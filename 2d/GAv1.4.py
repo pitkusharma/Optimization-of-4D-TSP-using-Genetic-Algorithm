@@ -1,6 +1,7 @@
 import random
 import matplotlib.pyplot as plt
 from crossover import *
+from mutation import *
 
 
 
@@ -8,7 +9,7 @@ from crossover import *
 #Genetic Algorithm Parameters
 popSize = 300
 elitismRate = 0.2
-mutationRate = .05
+mutationRate = 1
 crossOverRate = 0.8
 generationNo = 200
 
