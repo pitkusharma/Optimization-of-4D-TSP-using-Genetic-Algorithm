@@ -1,7 +1,7 @@
-import random
-import matplotlib.pyplot as plt
+import random, time, matplotlib.pyplot as plt
 from crossover import *
 from mutation import *
+from selection import *
 
 
 
@@ -10,13 +10,13 @@ from mutation import *
 popSize = 300
 elitismRate = 0.2
 mutationRate = 1
-crossOverRate = 0.8
+crossOverRate = 0.6
 generationNo = 200
 
 
 
 
-fileName ="dataSets/fri26_d.txt"
+fileName ="dataSets/gr17_d.txt"
 chromosomeRollNo = 0
 plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
 
@@ -222,7 +222,7 @@ def mutateChildren(children, mutatedChildren, mutationRate):
       count -= 1
   
   for i in mutatedChildren:
-    mutate(i)
+    inversion_mutation(i)
 
 
 def createNextGeneration(population, eliteChromosomes, matingPool, children, nextGeneration):
@@ -256,39 +256,39 @@ def geneticAlgorithm():
     print("\n")
     assignFitness(population)
 
-    print("/////_____________ POPULATION _______________//")
-    print(population)
+    # print("/////_____________ POPULATION _______________//")
+    # print(population)
 
     eliteChromosomes = []
     elitism(population, eliteChromosomes, elitismRate)
 
-    print("/////_____________ ELITE CHROMOSOMES OF THIS POPULATION _______________//")
-    print(eliteChromosomes)
+    # print("/////_____________ ELITE CHROMOSOMES OF THIS POPULATION _______________//")
+    # print(eliteChromosomes)
     
     matingPool = []
     selectParents(population, matingPool, eliteChromosomes, numberOfParents = popSize * crossOverRate)
 
-    print("/////_____________ SELECTED PARENTS FOR CROSSOVER _______________//")
-    print(matingPool)
+    # print("/////_____________ SELECTED PARENTS FOR CROSSOVER _______________//")
+    # print(matingPool)
 
     children = []
     generateChildren(matingPool, children)
     assignFitness(children)
 
-    print("/////_____________ GENERATED CHILDREN FROM CROSSOVER _______________//")
-    print(children)
+    # print("/////_____________ GENERATED CHILDREN FROM CROSSOVER _______________//")
+    # print(children)
 
     mutatedChildren = []
     mutateChildren(children, mutatedChildren, mutationRate)
     assignFitness(mutatedChildren)
-    print("/////_____________ APPLYING MUTATION ON CHILDREN _______________//")
-    print(mutatedChildren)
+    # print("/////_____________ APPLYING MUTATION ON CHILDREN _______________//")
+    # print(mutatedChildren)
 
     nextGeneration = []
     createNextGeneration(population, eliteChromosomes, matingPool, children, nextGeneration)
 
-    print("/////_____________ NEXT GENERATION = ELITES + CHILDREN + REST OF POPULATION _______________//")
-    print(nextGeneration)
+    # print("/////_____________ NEXT GENERATION = ELITES + CHILDREN + REST OF POPULATION _______________//")
+    # print(nextGeneration)
     population = nextGeneration.copy()
 
     sortedPopulation = sorted(population,key = lambda x : x.distance)
@@ -299,9 +299,10 @@ def geneticAlgorithm():
   return costList
 
 
-
+takenTime = time.time()
 costList = geneticAlgorithm()
-
+takenTime = time.time() - takenTime
+print("\nTime Taken: ", takenTime)
 
 #plotting
 
