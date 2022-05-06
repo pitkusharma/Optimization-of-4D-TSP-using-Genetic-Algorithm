@@ -222,7 +222,7 @@ def mutateChildren(children, mutatedChildren, mutationRate):
       count -= 1
   
   for i in mutatedChildren:
-    inversion_mutation(i)
+    mutate(i)
 
 
 def createNextGeneration(population, eliteChromosomes, matingPool, children, nextGeneration):
