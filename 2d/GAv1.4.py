@@ -1,4 +1,4 @@
-import random, time, matplotlib.pyplot as plt
+import random, math, time, matplotlib.pyplot as plt
 from crossover import *
 from mutation import *
 from selection import *
@@ -16,7 +16,7 @@ generationNo = 200
 
 
 
-fileName ="dataSets/gr17_d.txt"
+fileName ="dataSets/att48_d.txt"
 chromosomeRollNo = 0
 plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
 
@@ -44,6 +44,46 @@ def readTSPData(fileName):
   tempLine.append(temp)
   formattedData.append(tempLine)
   return formattedData
+
+
+def readTSPData2 (fileName):
+  sourceFile = open(fileName, "r")
+  rawData = sourceFile.read()
+  sourceFile.close()
+  cities = []
+  city = []
+  temp = ""
+  for i in rawData:
+    if i != " " and i != "\n":
+      temp = temp + i
+    
+    if i == " " and temp != "":
+      city.append(temp)
+      temp = ""
+    
+    if i == "\n" and temp != "":
+      city.append(temp)
+      temp = ""
+      cities.append(city)
+      city = []
+  
+  dataMatrix  = []
+  row = []
+
+  for i in range(0, len(cities)):
+    row = []
+    for j in range(0, len(cities)):
+      x1 = float(cities[i][1])
+      y1 = float(cities[i][2])
+      x2 = float(cities[j][1])
+      y2 = float(cities[j][2])
+      if i == j:
+        temp = 0
+      else:
+        temp = math.sqrt(  (x1 - x2)**2  +  (y1 - y2)**2   )
+      row.append(temp)
+    dataMatrix.append(row)
+  return dataMatrix
 
 
 dataMatrix = readTSPData(fileName)
