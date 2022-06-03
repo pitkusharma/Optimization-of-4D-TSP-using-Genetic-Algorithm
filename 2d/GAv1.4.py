@@ -16,7 +16,7 @@ generationNo = 200
 
 
 
-fileName ="dataSets/att48_d.txt"
+fileName ="att48_d.txt"
 chromosomeRollNo = 0
 plotFlag = 1 # Assign 1 for plotting, 0 for not plotting
 
